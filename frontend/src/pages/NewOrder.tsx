@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -62,12 +68,12 @@ const NewOrders = () => {
     const { name, value } = e.target;
     if (name.startsWith("student_info.")) {
       const field = name.split(".")[1];
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         student_info: { ...prev.student_info, [field]: value },
       }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -118,7 +124,6 @@ const NewOrders = () => {
         description: "Order deleted successfully",
       });
 
-      // Refresh orders after delete
       fetchOrders();
     } catch (err: any) {
       toast({
@@ -149,7 +154,7 @@ const NewOrders = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const order = orders.find(o => o._id === selectedOrderId);
+      const order = orders.find((o) => o._id === selectedOrderId);
 
       if (!order) {
         toast({
@@ -162,17 +167,15 @@ const NewOrders = () => {
 
       const res = await API.post(
         "/payments/create-payment",
-        { 
-          amount: parseFloat(paymentAmount), 
-          orderId: selectedOrderId
-          // schoolId removed - backend will use configured school ID
+        {
+          amount: parseFloat(paymentAmount),
+          orderId: selectedOrderId,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // Gateway returns payment link
       const paymentLink = res.data?.collect_request_url;
 
       toast({
@@ -180,12 +183,10 @@ const NewOrders = () => {
         description: "Taking you to payment page",
       });
 
-      // Close modal and reset
       setShowAmountModal(false);
       setSelectedOrderId("");
       setPaymentAmount("");
 
-      // Redirect user to payment page
       if (paymentLink) {
         window.location.href = paymentLink;
       }
@@ -199,14 +200,14 @@ const NewOrders = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-background">
+    <div className="min-h-screen p-8 bg-background text-black dark:text-white">
       <Card className="w-full max-w-6xl mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-2xl">Orders</CardTitle>
             <CardDescription>Manage and view all orders</CardDescription>
           </div>
-          <Button onClick={() => setShowForm(prev => !prev)}>
+          <Button onClick={() => setShowForm((prev) => !prev)}>
             {showForm ? "Close Form" : "New Order"}
           </Button>
         </CardHeader>
@@ -214,7 +215,13 @@ const NewOrders = () => {
         <CardContent>
           {/* 👉 New Order Form */}
           {showForm && (
-            <form onSubmit={handleSubmit} className="space-y-4 mb-8 p-4 border rounded-lg">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 mb-8 p-4 rounded-lg 
+                bg-white dark:bg-gray-900 
+                border border-gray-200 dark:border-gray-700 
+                text-black dark:text-white"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="school_id">School ID</Label>
@@ -224,6 +231,7 @@ const NewOrders = () => {
                     value={formData.school_id}
                     onChange={handleChange}
                     required
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
                 <div>
@@ -233,6 +241,7 @@ const NewOrders = () => {
                     name="trustee_id"
                     value={formData.trustee_id}
                     onChange={handleChange}
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
                 <div>
@@ -243,6 +252,7 @@ const NewOrders = () => {
                     value={formData.student_info.name}
                     onChange={handleChange}
                     required
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
                 <div>
@@ -253,6 +263,7 @@ const NewOrders = () => {
                     value={formData.student_info.id}
                     onChange={handleChange}
                     required
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
                 <div>
@@ -263,6 +274,7 @@ const NewOrders = () => {
                     type="email"
                     value={formData.student_info.email}
                     onChange={handleChange}
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
                 <div>
@@ -272,18 +284,23 @@ const NewOrders = () => {
                     name="gateway_name"
                     value={formData.gateway_name}
                     onChange={handleChange}
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
               </div>
-              <Button type="submit" className="mt-4">Submit Order</Button>
+              <Button type="submit" className="mt-4">
+                Submit Order
+              </Button>
             </form>
           )}
 
           {/* 👉 Amount Input Modal */}
           {showAmountModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h3 className="text-lg font-semibold mb-4">Enter Payment Amount</h3>
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-96 text-black dark:text-white border border-gray-300 dark:border-gray-700">
+                <h3 className="text-lg font-semibold mb-4">
+                  Enter Payment Amount
+                </h3>
                 <div className="mb-4">
                   <Label htmlFor="amount">Amount</Label>
                   <Input
@@ -295,6 +312,7 @@ const NewOrders = () => {
                     onChange={(e) => setPaymentAmount(e.target.value)}
                     placeholder="Enter amount"
                     required
+                    className="bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white"
                   />
                 </div>
                 <div className="flex gap-2 justify-end">
@@ -308,9 +326,7 @@ const NewOrders = () => {
                   >
                     Cancel
                   </Button>
-                  <Button onClick={handleCreatePayment}>
-                    Create Payment
-                  </Button>
+                  <Button onClick={handleCreatePayment}>Create Payment</Button>
                 </div>
               </div>
             </div>
@@ -318,28 +334,61 @@ const NewOrders = () => {
 
           {/* 👉 Orders Table */}
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300 text-sm">
+            <table className="w-full border-collapse border border-gray-300 dark:border-gray-700 text-sm">
               <thead>
-                <tr className="bg-gray-100">
-                  <th className="border p-2">School ID</th>
-                  <th className="border p-2">Trustee ID</th>
-                  <th className="border p-2">Student Name</th>
-                  <th className="border p-2">Student ID</th>
-                  <th className="border p-2">Student Email</th>
-                  <th className="border p-2">Gateway</th>
-                  <th className="border p-2">Actions</th>
+                <tr className="bg-gray-100 dark:bg-gray-800">
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    School ID
+                  </th>
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    Trustee ID
+                  </th>
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    Student Name
+                  </th>
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    Student ID
+                  </th>
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    Student Email
+                  </th>
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    Gateway
+                  </th>
+                  <th className="border border-gray-300 dark:border-gray-700 p-2">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {orders.map(order => (
-                  <tr key={order._id} className="text-center">
-                    <td className="border p-2">{order.school_id}</td>
-                    <td className="border p-2">{order.trustee_id}</td>
-                    <td className="border p-2">{order.student_info?.name}</td>
-                    <td className="border p-2">{order.student_info?.id}</td>
-                    <td className="border p-2">{order.student_info?.email}</td>
-                    <td className="border p-2">{order.gateway_name}</td>
-                    <td className="border p-2">
+                {orders.map((order, i) => (
+                  <tr
+                    key={order._id}
+                    className={`text-center ${
+                      i % 2 === 0
+                        ? "bg-white dark:bg-gray-900"
+                        : "bg-gray-50 dark:bg-gray-800"
+                    }`}
+                  >
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
+                      {order.school_id}
+                    </td>
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
+                      {order.trustee_id}
+                    </td>
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
+                      {order.student_info?.name}
+                    </td>
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
+                      {order.student_info?.id}
+                    </td>
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
+                      {order.student_info?.email}
+                    </td>
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
+                      {order.gateway_name}
+                    </td>
+                    <td className="border border-gray-300 dark:border-gray-700 p-2">
                       <div className="flex gap-2 justify-center">
                         <Button
                           variant="destructive"
@@ -362,7 +411,10 @@ const NewOrders = () => {
                 ))}
                 {orders.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="border p-2 text-center text-gray-500">
+                    <td
+                      colSpan={7}
+                      className="border border-gray-300 dark:border-gray-700 p-2 text-center text-gray-500 dark:text-gray-400"
+                    >
                       No orders found
                     </td>
                   </tr>
