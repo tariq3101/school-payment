@@ -13,13 +13,26 @@ const transactionRoutes = require('./routes/transactions');
 const app = express();
 app.use(express.json());
 
-app.use(cors({
+// app.use(cors({
+//   origin: [
+//     "http://localhost:8080", // local dev
+//     "https://school-payment-frontend.vercel.app" // Vercel deployed frontend
+//   ],
+//   credentials: true
+// }));
+
+const corsOptions = {
   origin: [
-    "http://localhost:8080", // local dev
-    "https://school-payment-frontend.vercel.app" // Vercel deployed frontend
+    "http://localhost:8080",
+    "https://school-payment-frontend-lime.vercel.app"
   ],
-  credentials: true
-}));
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions)); // sab routes ke liye
+
 
 // connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
