@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import API from "@/api/axios";  // ⬅️ Axios instance
+import API from "../api/axios.js"; // ⬅️ Axios instance
 
 const Login = () => {
   const [formData, setFormData] = useState({
