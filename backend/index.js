@@ -13,19 +13,11 @@ const transactionRoutes = require('./routes/transactions');
 const app = express();
 app.use(express.json());
 
-const allowedOrigins = [
-  "http://localhost:8080", // dev
-  "https://school-payment-frontend-lime.vercel.app" // Vercel frontend
-];
-
 app.use(cors({
-  origin: function(origin, callback){
-    if(!origin) return callback(null, true); // Postman, curl
-    if(allowedOrigins.indexOf(origin) === -1){
-      return callback(new Error('CORS not allowed'), false);
-    }
-    return callback(null, true);
-  },
+  origin: [
+    "http://localhost:8080", // local dev
+    "https://school-payment-frontend.vercel.app" // Vercel deployed frontend
+  ],
   credentials: true
 }));
 
@@ -34,8 +26,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.error("Mongo Error:", err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.error("Mongo Error:", err));
 
 // Routes
 app.get("/", (req, res) => res.send("Payment Gateway API is running"));
