@@ -14,7 +14,10 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:8080",  // frontend URL
+  origin: [
+    "http://localhost:8080",
+    "https://school-payment-frontend-lime.vercel.app/",
+  ],  // frontend URL
   credentials: true
 }));
 
