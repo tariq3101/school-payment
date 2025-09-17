@@ -8,53 +8,66 @@ const protect = require("./middleware/auth");
 const paymentsRouter = require("./routes/payments");
 const ordersRouter = require("./routes/orders");
 const webhookRouter = require("./routes/webhook");
-const transactionRoutes = require('./routes/transactions');
+const transactionRoutes = require("./routes/transactions");
 
 const app = express();
 app.use(express.json());
 
-// app.use(cors({
-//   origin: [
-//     "http://localhost:8080", // local dev
-//     "https://school-payment-frontend.vercel.app" // Vercel deployed frontend
-//   ],
-//   credentials: true
-// }));
+// ✅ CORS setup for both localhost and Vercel frontend
+const allowedOrigins = [
+  "http://localhost:8080",
+  "https://school-payment-frontend-lime.vercel.app"
+];
 
 const corsOptions = {
-  origin: [
-    "http://localhost:8080",
-    "https://school-payment-frontend-lime.vercel.app"
-  ],
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
-  allowedHeaders: ["Content-Type","Authorization"],
-  credentials: true,
+  origin: function(origin, callback) {
+    // allow requests with no origin (Postman, curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("CORS not allowed"), false);
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 };
 
-app.use(cors(corsOptions)); // sab routes ke liye
+app.use(cors(corsOptions));
 
+// ✅ Handle preflight OPTIONS requests safely
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    return res.sendStatus(200);
+  }
+  next();
+});
 
-// connect to MongoDB Atlas
+// ✅ Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.error("Mongo Error:", err));
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.error("Mongo Error:", err));
 
-// Routes
+// ✅ Routes
 app.get("/", (req, res) => res.send("Payment Gateway API is running"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/payments", paymentsRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/webhook", webhookRouter);
-app.use('/api/transactions', transactionRoutes);
+app.use("/api/transactions", transactionRoutes);
 
-// Example protected test route
+// ✅ Protected test route
 app.get("/api/protected", protect, (req, res) => {
   res.json({ message: `Hello ${req.user.username}, you are authorized!` });
 });
 
-const PORT = process.env.PORT || 4000;
+// ✅ Render requires process.env.PORT
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
