@@ -13,11 +13,19 @@ const transactionRoutes = require('./routes/transactions');
 const app = express();
 app.use(express.json());
 
+const allowedOrigins = [
+  "http://localhost:8080", // dev
+  "https://school-payment-frontend-lime.vercel.app/" // Vercel frontend
+];
+
 app.use(cors({
-  origin: [
-    "http://localhost:8080",
-    "https://school-payment-frontend-lime.vercel.app/",
-  ],  // frontend URL
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true); // Postman, curl
+    if(allowedOrigins.indexOf(origin) === -1){
+      return callback(new Error('CORS not allowed'), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 
