@@ -143,7 +143,7 @@ router.get("/callback", async (req, res) => {
     );
 
     // 4. Respond / redirect
-    res.redirect("http://localhost:8080/transactions");
+    res.redirect("https://school-payment-frontend-lime.vercel.app/transactions");
 
   } catch (err) {
     console.error("Callback Error:", err.response?.data || err.message);
