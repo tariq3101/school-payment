@@ -47,6 +47,19 @@ school-payment/
 ```
 
 ---
+Sceenshots
+
+![Login Screenshot](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001010.png?raw=true)
+![All Transaction](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001123.png?raw=true)
+![All Transaction with Dark Mode](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001137.png?raw=true)
+![Transaction Status Check](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001203.png?raw=true)
+![New Order](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001216.png?raw=true)
+![Select School](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001234.png?raw=true)
+![Trnsaction Status Check wirh Dark Mode](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001306.png?raw=true)
+![External Payment Gateway](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001333.png?raw=true)
+![Payment Status simulator](https://github.com/tariq3101/images/blob/main/Screenshot%202025-09-18%20001411.png?raw=true)
+
+---
 
 ## ⚙️ Installation
 
