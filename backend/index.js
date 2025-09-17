@@ -15,7 +15,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:8080", // dev
-  "https://school-payment-frontend-lime.vercel.app/" // Vercel frontend
+  "https://school-payment-frontend-lime.vercel.app" // Vercel frontend
 ];
 
 app.use(cors({
