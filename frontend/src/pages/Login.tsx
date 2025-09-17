@@ -93,8 +93,6 @@ const Login = () => {
             </Button>
           </form>
 
-          {/* Demo credentials info */}
-
         </CardContent>
       </Card>
     </div>
