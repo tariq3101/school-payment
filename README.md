@@ -14,7 +14,6 @@ A **school payment management system** with a **backend** (API) and a **frontend
 - [Dependencies](#-dependencies)
 - [Troubleshooting](#-troubleshooting)
 - [Contributors](#-contributors)
-- [License](#-license)
 
 ---
 
@@ -151,7 +150,3 @@ API_KEY=your_payment_provider_key
 - Contributions welcome! Submit a pull request or open an issue.
 
 ---
-
-## 📜 License
-This project is currently unlicensed.  
-(You can add an open-source license such as MIT, Apache 2.0, or GPL to make it reusable.)
